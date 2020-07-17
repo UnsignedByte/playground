@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<!-- <html manifest='test.appcache'> -->
+<html>
+  <head>
+    <title>cacheing thingy</title>
+    <meta charset='UTF-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1'/>
+    <meta name='mobile-web-app-capable' content='yes'/>
+    <meta name='apple-mobile-web-app-capable' content='yes'/>
+    <meta name='apple-mobile-web-app-status-bar-style' content='black'/>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@100&display=swap" rel="stylesheet">
+    <link href='test.css' rel='stylesheet'>
+    <style>
+      p {
+        font-family: 'IBM Plex Sans', sans-serif;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>is this red</h1>
+    <p>Something exists below? also font is plex sanssisusm</p>
+    <p id="test"></p>
+    <script>
+      navigator.serviceWorker.register("./sw.js")
+    </script>
+    <script src='test.js'></script>
+  </body>
+</html>

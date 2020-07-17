@@ -10,3 +10,7 @@ pub fn suck(inp:&String) -> bool {
 	
 	re.is_match(&inp)
 }
+
+pub fn toeken(inp:&str) -> Vec<&str> {
+	
+}

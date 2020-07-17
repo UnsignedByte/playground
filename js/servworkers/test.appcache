@@ -1,0 +1,9 @@
+CACHE MANIFEST
+# 2020-07-16:1
+
+# cached files.
+CACHE:
+index.html
+test.css
+test.js
+https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@100&display=swap
