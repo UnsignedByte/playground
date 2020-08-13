@@ -2,7 +2,7 @@
 * @Author: UnsignedByte
 * @Date:   23:41:04, 12-Aug-2020
 * @Last Modified by:   UnsignedByte
-* @Last Modified time: 00:50:34, 13-Aug-2020
+* @Last Modified time: 00:55:04, 13-Aug-2020
 */
 
 let posts;
@@ -16,7 +16,7 @@ function htmlToElement(html) {
 }
 
 function load(){
-	posts = Array.prototype.slice.call(document.querySelectorAll("#main-inner > div.edge-wrapper > div > ul > li"));
+	posts = Array.prototype.slice.call(document.querySelectorAll("#main-inner ul.s-edge-feed > li"));
 	// rerun load when new posts loaded
 	posts[posts.length-1].children[0].onclick = load;
 	posts = posts.slice(0, posts.length-1);
