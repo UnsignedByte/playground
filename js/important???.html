@@ -104,7 +104,7 @@ const sha256 = function sha256(ascii) {
 if (sha256(localStorage.getItem("[important???] password") || "") !== HASHED) {
 	for(;;){
     let a = prompt("Please input password before you access this site.") || ""
-    if(sha256(a) === HASHED){
+    if(a !== null && sha256(a) === HASHED){
     	localStorage.setItem("[important???] password", a)
       alert("Verified.")
       break;
