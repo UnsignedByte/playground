@@ -2,7 +2,7 @@
 * @Author: UnsignedByte
 * @Date:   23:41:04, 12-Aug-2020
 * @Last Modified by:   UnsignedByte
-* @Last Modified time: 01:12:27, 13-Aug-2020
+* @Last Modified time: 01:58:44, 13-Aug-2020
 */
 
 // document.head.appendChild(document.createElement('script')).src = 'https://unsignedbyte.github.io/playground/js/ifram/complexAAA.js'
@@ -20,6 +20,7 @@ function htmlToElement(html) {
 function load(){
 	console.log("loading new posts...");
 	posts = Array.prototype.slice.call(document.querySelectorAll("#main-inner ul.s-edge-feed > li"));
+	if (posts.length === 0) continue;
 	// rerun load when new posts loaded
 	posts[posts.length-1].children[0].addEventListener('click', async ()=>{
 		for(let i = 0; i < 10; i++){
