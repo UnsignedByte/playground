@@ -2,8 +2,10 @@
 * @Author: UnsignedByte
 * @Date:   23:41:04, 12-Aug-2020
 * @Last Modified by:   UnsignedByte
-* @Last Modified time: 01:00:19, 13-Aug-2020
+* @Last Modified time: 01:12:27, 13-Aug-2020
 */
+
+// document.head.appendChild(document.createElement('script')).src = 'https://unsignedbyte.github.io/playground/js/ifram/complexAAA.js'
 
 let posts;
 const delay = ms => new Promise(res => setTimeout(res, ms));
@@ -19,11 +21,16 @@ function load(){
 	console.log("loading new posts...");
 	posts = Array.prototype.slice.call(document.querySelectorAll("#main-inner ul.s-edge-feed > li"));
 	// rerun load when new posts loaded
-	posts[posts.length-1].children[0].addEventListener('click', async ()=>{await delay(1000);load()});
+	posts[posts.length-1].children[0].addEventListener('click', async ()=>{
+		for(let i = 0; i < 10; i++){
+			await delay(1000);
+			load();
+		}
+	});
 	posts = posts.slice(0, posts.length-1);
 	for (x of posts){
 		let c1 = x.querySelector(`.feed-comments .s-comments-post-form > form > div > span.submit-span-wrapper`);
-		if (c1 === null) continue;
+		if (c1 === null || x.querySelector('span[name="spamComment"]') !== null) continue;
 		let c = htmlToElement(`<span name="spamComment" style="display: none; border: 1px solid rgb(2, 61, 90);background: url(&quot;/sites/all/themes/schoology_theme/images/btn-bg-dark.gif?5f3434ac7da37785&quot;) repeat-x rgb(51, 125, 188);float: none !important;vertical-align: top;white-space: nowrap;margin-top: 5px;margin-left: 10px;padding: 0;outline: none;"><input type="button" value="Spam Post" class="" onclick="spam(&quot;${x.id}&quot;)" style="padding: 4px 8px;font-size: 13px;height: 24px;"></span>`);
 		c = c1.parentNode.insertBefore(c, c1.nextSibling);
 		let f = (event) => {
@@ -81,9 +88,19 @@ async function spam(id){
 		  "method": "POST",
 		  "mode": "cors",
 		  "credentials": "include"
+		}).then(resp=>{
+			if (resp.status === 200){
+				console.log(`Message sent successfully to ${dat.nid}.`);
+			}
 		});
 		await delay(3000);
 	}
 }
 
-load();
+async function continuousload(){
+	for(;;){
+		load();
+		await delay(5000);
+	}
+}
+continuousload();
