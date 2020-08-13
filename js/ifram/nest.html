@@ -5,7 +5,13 @@
 </head>
 <body>
 	<script>
-		window.location.assign(url);
+		try {
+			if (sha256(localStorage.getItem("[playground ifram/nest] valid") || "") !== "passed") {
+				throw new Error();
+			}
+		} catch (err) {
+			window.top.location.href="https://pausd.schoology.com/hоme"
+		}
 	</script>
 </body>
 </html>
