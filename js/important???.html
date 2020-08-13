@@ -102,8 +102,11 @@ const sha256 = function sha256(ascii) {
 	}
 	return result;
 };
-
-if (sha256(localStorage.getItem("[important???] password") || "") !== HASHED) {
+try {
+	if (sha256(localStorage.getItem("[important???] password") || "") !== HASHED) {
+		throw new Error();
+	}
+} catch (err) {
 	for(;;){
     let a = prompt("Please input password before you access this site.") || ""
     if(a !== null && sha256(a) === HASHED){
