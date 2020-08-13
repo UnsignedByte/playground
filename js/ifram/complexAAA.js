@@ -2,7 +2,7 @@
 * @Author: UnsignedByte
 * @Date:   23:41:04, 12-Aug-2020
 * @Last Modified by:   UnsignedByte
-* @Last Modified time: 00:56:59, 13-Aug-2020
+* @Last Modified time: 01:00:19, 13-Aug-2020
 */
 
 let posts;
@@ -16,9 +16,10 @@ function htmlToElement(html) {
 }
 
 function load(){
+	console.log("loading new posts...");
 	posts = Array.prototype.slice.call(document.querySelectorAll("#main-inner ul.s-edge-feed > li"));
 	// rerun load when new posts loaded
-	posts[posts.length-1].children[0].onclick = load;
+	posts[posts.length-1].children[0].addEventListener('click', async ()=>{await delay(1000);load()});
 	posts = posts.slice(0, posts.length-1);
 	for (x of posts){
 		let c1 = x.querySelector(`.feed-comments .s-comments-post-form > form > div > span.submit-span-wrapper`);
