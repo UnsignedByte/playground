@@ -2,7 +2,7 @@
 * @Author: UnsignedByte
 * @Date:   21:06:16, 16-Jul-2020
 * @Last Modified by:   UnsignedByte
-* @Last Modified time: 13:12:14, 17-Jul-2020
+* @Last Modified time: 15:40:23, 26-Jul-2020
 */
 
 const CACHENAME = 'js13kPWA-v1';
@@ -21,3 +21,4 @@ self.addEventListener('install', e => {
 self.addEventListener('fetch', e => {
   e.respondWith(caches.match(e.request).then(response => response || fetch(e.request)));
 });
+
