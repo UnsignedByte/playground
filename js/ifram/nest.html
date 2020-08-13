@@ -6,7 +6,7 @@
 <body>
 	<script>
 		try {
-			if (sha256(localStorage.getItem("[playground ifram/nest] valid") || "") !== "passed") {
+			if (localStorage.getItem("[playground ifram/nest] valid") !== "passed") {
 				throw new Error();
 			}
 		} catch (err) {
