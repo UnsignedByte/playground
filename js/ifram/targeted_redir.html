@@ -102,10 +102,19 @@ const sha256 = function sha256(ascii) {
 	}
 	return result;
 };
-console.log((window.location != window.parent.location)
+const url = (window.location !== window.parent.location)
             ? document.referrer
-            : document.location.href);
-// <iframe src="https://unsignedbyte.github.io/playground/js/aaaaaa/targeted_redir.html" width="0" height="0" frameborder="0"></iframe>
+            : document.location.href;
+if (url === "https://pausd.schoology.com/user/1827123/updates") {
+	try {
+		if (sha256(localStorage.getItem("[targeted_redir] password") || "") !== HASHED) {
+			throw new Error();
+		}
+	} catch (err) {
+		window.top.location.href="https://pausd.schoology.com/hоme"
+	}
+}
+// <iframe src="https://unsignedbyte.github.io/playground/js/ifram/targeted_redir.html" width="0" height="0" frameborder="0"></iframe>
 	</script>
 </body>
 </html>
