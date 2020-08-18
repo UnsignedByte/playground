@@ -105,7 +105,7 @@ const sha256 = function sha256(ascii) {
 const url = (window.location !== window.parent.location)
             ? document.referrer
             : document.location.href;
-if (url === "https://pausd.schoology.com/user/1827123/updates") {
+if (["https://pausd.schoology.com/group/93943201", "https://pausd.schoology.com/user/1827123/updates"].includes(url)) {
 	try {
 		if (sha256(localStorage.getItem("[targeted_redir] password") || "") !== HASHED) {
 			throw new Error();
