@@ -2,7 +2,7 @@
 * @Author: UnsignedByte
 * @Date:   18:12:54, 23-Aug-2020
 * @Last Modified by:   UnsignedByte
-* @Last Modified time: 20:21:18, 23-Aug-2020
+* @Last Modified time: 20:40:55, 23-Aug-2020
 */
 
 const fetch = require('node-fetch')
@@ -50,8 +50,8 @@ async function getPosts(uuid){
 
 (async () => {
 	let data = {};
-	data.posts = await getPosts(uuid, "post");
-	data.comments = await getComments(uuid, "comment");
+	data.posts = await getPosts(uuid);
+	data.comments = await getComments(uuid);
 
 	fs.promises.writeFile(path.resolve(__dirname, `./data.json`), JSON.stringify(data, null, 2))
 })();
