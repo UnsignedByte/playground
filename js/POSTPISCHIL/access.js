@@ -2,7 +2,7 @@
 * @Author: UnsignedByte
 * @Date:   18:12:54, 23-Aug-2020
 * @Last Modified by:   UnsignedByte
-* @Last Modified time: 20:06:44, 23-Aug-2020
+* @Last Modified time: 20:21:18, 23-Aug-2020
 */
 
 const fetch = require('node-fetch')
@@ -11,7 +11,7 @@ const fs = require('fs');
 
 let uuid = 298225;
 const delay = ms => new Promise(res => setTimeout(res, ms));
-const filter = "!Fxzr.hTsTuASi98IBjG))qEF.("
+const filter = "!.K6KdqgnytCtwZ1xc1FjWPlJ4oXc("
 
 async function continuousFetch(link, parseF){
 	let page = 0;
@@ -37,14 +37,14 @@ async function continuousFetch(link, parseF){
 async function getComments(uuid){
 	return await continuousFetch(
 		`https://api.stackexchange.com/2.2/users/${uuid}/comments`,
-		x=>({body:x.body, markdown:x.body_markdown, date:new Date(x.creation_date*1000), score:x.score, id:x.comment_id})
+		x=>({body:x.body, markdown:x.body_markdown, link:x.link, date:new Date(x.creation_date*1000), score:x.score, id:x.comment_id})
 	)
 }
 
 async function getPosts(uuid){
 	return await continuousFetch(
 		`https://api.stackexchange.com/2.2/users/${uuid}/posts`,
-		x=>({body:x.body, markdown:x.body_markdown, type:x.post_type, date:new Date(x.creation_date*1000), score:x.score, id:x.post_id})
+		x=>({body:x.body, markdown:x.body_markdown, type:x.post_type, link:x.link, date:new Date(x.creation_date*1000), score:x.score, id:x.post_id})
 	)
 }
 
