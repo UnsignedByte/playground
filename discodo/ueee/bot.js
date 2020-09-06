@@ -2,7 +2,7 @@
 * @Author: UnsignedByte
 * @Date:   11:57:15, 06-Sep-2020
 * @Last Modified by:   UnsignedByte
-* @Last Modified time: 13:18:00, 06-Sep-2020
+* @Last Modified time: 13:40:30, 06-Sep-2020
 */
 
 
@@ -69,14 +69,29 @@ async function main (token, Discord) {
 
 	const commands = [
 		[/^echo (.+?)( \d+)?$/s, async (x, msg)=>{
-			console.log("run");
 			for (let i = 0; i < (x[2] || 1); i++){
 				await msg.channel.send(x[1])
 			}
 		}],
-		[/^wiki$/, async (x, msg)=>{
+		[/^wiki/, async (x, msg)=>{
 			let title = await fetch('https://en.wikipedia.org/w/api.php?format=json&action=query&generator=random&origin=*').then(x=>x.json()).then(x=>Object.values(x.query.pages)[0].title);
 			await msg.channel.send(`lwiki ${title}`);
+		}],
+		[/^run (.+?)( \d+)?$/s, async (x, msg)=>{
+			for (let i = 0; i < (x[2] || 1); i++){
+				if (x[1].startsWith('u')) {
+					x[1] = x[1].substring(1);
+				}
+				for(let r of commands){
+					let v = x[1].match(r[0]);
+					if (v !== null){
+						await r[1](v, msg)
+					}
+				}
+			}
+		}],
+		[/^ping (\d+)( .+)?$/, async (x, msg)=>{
+			await msg.channel.send(`<@!${x[1]}> ${x[2]||''}`);
 		}]
 	];
 
@@ -89,9 +104,6 @@ async function main (token, Discord) {
 			msg.content = msg.content.substring(1);
 			for(let r of commands){
 				let v = msg.content.match(r[0]);
-				console.log(msg.content);
-				console.log(r);
-				console.log(v);
 				if (v !== null){
 					await r[1](v, msg)
 				}
