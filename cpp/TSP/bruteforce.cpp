@@ -1,8 +1,3 @@
-/*
-ID: edlam181
-TASK: tsp
-LANG: C++
-*/
 #include <iostream>
 #include <fstream>
 #include <cstring>
