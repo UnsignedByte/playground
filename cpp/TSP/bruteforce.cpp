@@ -47,7 +47,7 @@ int main(){
 	int min_length = INF;
 	string min_route;
 	queue<path> q;
-	q.push((path){0,0,0,"0"});
+	q.push((path){1,0,0,"0"});
 	while(!q.empty()) {
 		path p = q.front();
 		q.pop();
@@ -56,7 +56,7 @@ int main(){
 			if (i==0 && p.visited == (1<<N) -1) {
 				int l = p.length+graph[p.id][i];
 				if (l<min_length) {
-					cout << p.route << endl;
+					// cout << p.route << endl;
 					min_length = l;
 					min_route = p.route;
 				}
