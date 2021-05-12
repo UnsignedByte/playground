@@ -125,8 +125,8 @@ int main()
 		//Cb and Cr
 		for(int y = 0; y < frame->height/2; y++) {
 			for(int x = 0; x < frame->width/2; x++) {
-				frame->data[1][y * frame->linesize[1] + x] = 128 + y + i * 2;
-				frame->data[2][y * frame->linesize[2] + x] = 64 + x + i * 5;
+				frame->data[1][y * frame->linesize[1] + x] = y + i;
+				frame->data[2][y * frame->linesize[2] + x] = x + i;
 			}
 		}
 
