@@ -86,7 +86,7 @@ int main()
 	av_codec_context->time_base = (AVRational){1,fps};
 	av_codec_context->framerate = (AVRational){fps,1};
 
-	av_codec_context->gop_size = fps*2; //one intra frame every 2 seconds
+	av_codec_context->gop_size = fps; //one intra frame every 2 seconds
 	av_codec_context->max_b_frames = 1; //max number of B-frames between normal frames
 	av_codec_context->pix_fmt = AV_PIX_FMT_YUV420P; //color format
 
@@ -109,7 +109,7 @@ int main()
 	res = av_frame_get_buffer(frame, 32);
 
 	for (int i = 0; i < fps*60; i++) { //encode 60 seconds of video
-		// fflush(stdout);
+		fflush(stdout);
 
 		res = av_frame_make_writable(frame); // make frame writable
 		if (res < 0)
@@ -118,15 +118,15 @@ int main()
 		//create dummy frame
 		for(int y = 0; y < frame->height; y++) {
 			for(int x = 0; x < frame->width; x++) {
-				frame->data[0][y * frame->linesize[0] + x] = x + y + i * 3;
+				frame->data[0][y * frame->linesize[0] + x] = 0;
 			}
 		}
 
 		//Cb and Cr
 		for(int y = 0; y < frame->height/2; y++) {
 			for(int x = 0; x < frame->width/2; x++) {
-				frame->data[1][y * frame->linesize[1] + x] = y + i;
-				frame->data[2][y * frame->linesize[2] + x] = x + i;
+				frame->data[1][y * frame->linesize[1] + x] = 0;
+				frame->data[2][y * frame->linesize[2] + x] = 0;
 			}
 		}
 
