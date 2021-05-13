@@ -66,7 +66,6 @@ int main()
 	AVCodecContext* av_codec_context;
 	AVCodec* av_codec;
 	AVStream* av_stream;
-  uint8_t endcode[] = { 0, 0, 1, 0xb7 };
 	int res; //stores error codes (if returned);
 
 	av_format_context = avformat_alloc_context();
