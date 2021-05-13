@@ -1,5 +1,5 @@
 MAIN := exe #output exe
-IN := write.cpp
+IN := main.cpp
 LDLIBS := -lavcodec -lavformat -lavutil
 # LDLIBS := -lsfml-graphics -lsfml-window -lsfml-system
 
