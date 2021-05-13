@@ -12,6 +12,7 @@ av_make_error_string((char*)__builtin_alloca(AV_ERROR_MAX_STRING_SIZE), AV_ERROR
 
 int main()
 {
+	// const char* filename = "../../../../n-pendulums/output/2Pendulum5.00kg2.356theta_800x800_10secs30fps_0.050speed0.000010dt.mp4";
 	const char* filename = "../write/tmp.mp4";
 
 	AVFormatContext* fctx = avformat_alloc_context();

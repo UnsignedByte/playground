@@ -12,7 +12,16 @@ extern "C"
 #define av_err2str(errnum) \
 av_make_error_string((char*)__builtin_alloca(AV_ERROR_MAX_STRING_SIZE), AV_ERROR_MAX_STRING_SIZE, errnum)
 
-static void encode(AVFormatContext* av_format_context, AVCodecContext* av_codec_context, AVFrame* frame, AVPacket* packet)
+static int write_frame(AVFormatContext* av_format_context, const AVRational& time_base, AVStream *av_stream, AVPacket *packet)
+{
+	/* rescale output packet timestamp values from codec to stream timebase */
+	av_packet_rescale_ts(packet, time_base, av_stream->time_base);
+	packet->stream_index = av_stream->index;
+	printf("Stream Index: %d, PTS: %" PRId64 ", DTS: %" PRId64 ", pos: %" PRId64 ", duration: %" PRId64 "\n", packet->stream_index, packet->pts, packet->dts, packet->pos, packet->duration);
+	return av_interleaved_write_frame(av_format_context, packet);
+}
+
+static void encode(AVFormatContext* av_format_context, AVCodecContext* av_codec_context, AVStream* av_stream, AVFrame* frame, AVPacket* packet)
 {
 	int res;
 
@@ -39,7 +48,7 @@ static void encode(AVFormatContext* av_format_context, AVCodecContext* av_codec_
 		packet->duration = 1;
 		// printf("%ld\n", packet->duration);
 
-		res = av_interleaved_write_frame(av_format_context, packet);
+		res = write_frame(av_format_context, av_codec_context->time_base, av_stream, packet);
 		if (res < 0) {
 			fprintf(stderr, "Error muxing packet\n");
 			break;
@@ -155,7 +164,7 @@ int main()
 
 	res = av_frame_get_buffer(frame, 32);
 
-	for (int i = 0; i < fps*30; i++) { //encode 60 seconds of video
+	for (int i = 0; i < fps*60; i++) { //encode 60 seconds of video
 		fflush(stdout);
 
 		res = av_frame_make_writable(frame); // make frame writable
@@ -177,14 +186,15 @@ int main()
 			}
 		}
 
-		frame->pts = av_rescale_q(i, av_codec_context->time_base, av_stream->time_base);
+		// frame->pts = av_rescale_q(i, av_codec_context->time_base, av_stream->time_base);
+		frame->pts = i;
 
 		//encode image
-		encode(av_format_context, av_codec_context, frame, packet);
+		encode(av_format_context, av_codec_context, av_stream, frame, packet);
 	}
 
 	//flush encoder
-	encode(av_format_context, av_codec_context, NULL, packet);
+	encode(av_format_context, av_codec_context, av_stream, NULL, packet);
 
 	//write file end code
 	res = av_write_trailer(av_format_context);
