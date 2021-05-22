@@ -1,4 +1,5 @@
 #include <iostream>
+#include <vector>
 extern "C"
 {
 	#include <libavcodec/avcodec.h>
@@ -10,10 +11,47 @@ extern "C"
 #define av_err2str(errnum) \
 av_make_error_string((char*)__builtin_alloca(AV_ERROR_MAX_STRING_SIZE), AV_ERROR_MAX_STRING_SIZE, errnum)
 
-int main()
+// reads argc and argv and writes to names, values
+static int parse_cli(int argc, char** argv, std::vector<char*>& names, std::vector<char*>& values)
 {
-	// const char* filename = "../../../../n-pendulums/output/2Pendulum5.00kg2.356theta_800x800_10secs30fps_0.050speed0.000010dt.mp4";
-	const char* filename = "../write/tmp.mp4";
+	int argi = -1;
+	for(int i = 1; i < argc; i++)
+	{
+		char* word = argv[i];
+		if (word[0] == '-') {
+			word++; // remove "-" from the string
+			argi++;
+			// printf("Parsing argument name %s, index %d\n", word, argi);
+			names.push_back(word);
+			values.push_back(argv[++i]);
+		} else {
+			asprintf(&values[argi], "%s %s", values[argi], word);
+			// printf("Updating argument value to %s\n", word);
+		}
+	}
+	return argi+1;
+}
+
+unsigned constexpr static hash(const char* str)
+{
+	return *str ?
+    static_cast<unsigned int>(*str) + 33 * hash(str + 1) :
+    5381;
+}
+
+int main(int argc, char** argv)
+{
+	char* filename;
+	asprintf(&filename, "../write/tmp.mp4");
+	std::vector<char*> names, values;
+	int argL = parse_cli(argc, argv, names, values);
+	for(int i = 0; i < argL; i++){
+		switch (hash(names[i])) {
+			case hash("f"):
+			case hash("file"):
+				asprintf(&filename, "%s", values[i]);
+		}
+	}
 
 	AVFormatContext* fctx = avformat_alloc_context();
 
