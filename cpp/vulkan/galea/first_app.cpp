@@ -2,7 +2,7 @@
 * @Author: almundmilk
 * @Date:   2021-06-11 19:44:05
 * @Last Modified by:   UnsignedByte
-* @Last Modified time: 2021-06-14 17:56:08
+* @Last Modified time: 2021-06-21 13:26:12
 */
 
 #include "first_app.hpp"
@@ -103,5 +103,9 @@ namespace lve {
 		}
 
 		result = lveSwapChain.submitCommandBuffers(&commandBuffers[imageIndex], &imageIndex);
+
+		if (result != VK_SUCCESS) {
+			throw std::runtime_error("failed to present swapchain image");
+		}
 	}
 }
