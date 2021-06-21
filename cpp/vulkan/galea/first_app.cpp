@@ -2,7 +2,7 @@
 * @Author: almundmilk
 * @Date:   2021-06-11 19:44:05
 * @Last Modified by:   UnsignedByte
-* @Last Modified time: 2021-06-21 13:26:12
+* @Last Modified time: 2021-06-21 13:29:25
 */
 
 #include "first_app.hpp"
@@ -26,6 +26,8 @@ namespace lve {
 			glfwPollEvents();
 			drawFrame();
 		}
+
+		vkDeviceWaitIdle(lveDevice.device());
 	}
 
 	void FirstApp::createPipelineLayout() {
