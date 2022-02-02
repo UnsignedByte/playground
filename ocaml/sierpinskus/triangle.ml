@@ -2,7 +2,7 @@
 * @Author: UnsignedByte
 * @Date:   2022-02-02 08:14:01
 * @Last Modified by:   UnsignedByte
-* @Last Modified time: 2022-02-02 09:15:26
+* @Last Modified time: 2022-02-02 09:20:48
 *)
 
 let tri h m = 
@@ -33,8 +33,8 @@ let triangle_str h m =
 			let rec plr l =
 				match l with
 				| [] -> rep_str " " (h - i)
-				| e :: lx -> ((plr lx) ^ " " ^ (string_of_int e))
-			in ((pllr lx (i-1)) ^ "\n" ^ (plr e))
+				| e :: lx -> plr lx ^ " " ^ string_of_int e
+			in pllr lx (i-1) ^ "\n" ^ plr e
 	in pllr (tri h m) h
 
 let () = print_endline (triangle_str 32 2)
