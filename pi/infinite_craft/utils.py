@@ -91,6 +91,12 @@ def recalculate_yield(con, cur):
         unique_products[a].add(c)
         unique_products[b].add(c)
 
+        if a != c and b != c:
+            cur.execute(
+                "UPDATE elements SET freq = freq + 1 WHERE text = ?",
+                (c,),
+            )
+
     for element, products in unique_products.items():
         cur.execute(
             "UPDATE elements SET yield = ? WHERE text = ?",

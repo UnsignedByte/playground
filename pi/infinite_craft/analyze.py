@@ -83,7 +83,7 @@ def summarize_elements(cur, element):
     # Write a markdown file with summary information about this element
     with open(path.join(element_path, f"summary.md"), "w") as f:
         # Get the row for the element
-        _, emoji, discovered, depth, y, r = cur.execute(
+        _, emoji, discovered, depth, y, r, frq = cur.execute(
             "SELECT * FROM elements WHERE text = ?", (element,)
         ).fetchone()
 
@@ -102,7 +102,12 @@ def summarize_elements(cur, element):
         f.write(f"**First Discovery:** {'Yes' if discovered else 'No'}\n\n")
 
         f.write(f"**Depth:** {depth}\n\n")
-        f.write(f"This recipe is used to create {y} unique elements\n\n")
+        f.write(
+            f"This element has been used {r} times to create {y} unique elements\n\n"
+        )
+        f.write(
+            f"This element has been created by {frq} recipes not including the element itself\n\n"
+        )
         f.write(f"---\n\n")
 
         # -----------------------------------------------------------
@@ -216,6 +221,7 @@ def summarize(cur):
 
     # Create a bar graph
     plt.bar(depths, counts)
+    plt.yscale("log")
 
     # Set labels and title
     plt.xlabel("Depth")
