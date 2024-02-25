@@ -324,6 +324,12 @@ def main():
         help="The word2vec model to use for the search algorithm",
     )
 
+    parser.add_argument(
+        "--invert",
+        action="store_true",
+        help="Invert the weights for the weighted random algorithm",
+    )
+
     args = parser.parse_args()
 
     if args.batch < 1:
@@ -660,6 +666,8 @@ def main():
                 l = ["depth", "yield", "recipe_count", "freq"]
                 elements = [x[0] for x in data]
 
+                log.debug(f"Weighting by {args.key}")
+
                 if args.key == "commonality":
                     new_elements = []
 
@@ -691,6 +699,10 @@ def main():
 
                 probabilities = np.array(probabilities)
                 probabilities = probabilities / probabilities.sum()
+                # Invert the probabilities if needed
+                if args.invert:
+                    probabilities = 1 / (probabilities + 1e-6 / len(probabilities))
+                    probabilities = probabilities / probabilities.sum()
 
                 # print words and probabilities sorted
                 with open("tmp.txt", "w") as f:
@@ -718,6 +730,34 @@ def main():
                 # Loop through all pairs of elements
                 for x, y in zip(a, b):
                     insert_combination(args, con, cur, x, y)
+        elif args.algorithm == "explore":
+            # Get all elements
+            elements = cur.execute(
+                """
+                SELECT text FROM elements
+                    WHERE text <> "Nothing"
+                    ORDER BY RANDOM()
+                """
+            ).fetchall()
+
+            elements = [x for x, in elements]
+
+            search = set(args.search)
+
+            # Make sure the elements exist
+            for element in search:
+                if (
+                    cur.execute(
+                        "SELECT COUNT(*) FROM elements WHERE text = ?", (element,)
+                    ).fetchone()[0]
+                    == 0
+                ):
+                    log.error(f"Element {element} does not exist")
+                    exit(1)
+
+            for x in elements:
+                for y in search:
+                    insert_combination(args, con, cur, y, x)
 
     except KeyboardInterrupt:
         log.info("Exiting...")
