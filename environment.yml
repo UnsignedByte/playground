@@ -16,4 +16,3 @@ dependencies:
     - POT
     - gensim
     - wordfreq
-  - playwright
