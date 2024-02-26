@@ -318,6 +318,10 @@ def main():
     )
 
     parser.add_argument(
+        "--only-word", action="store_true", help="Only use single word elements"
+    )
+
+    parser.add_argument(
         "--model",
         type=str,
         default="glove-twitter-25",
@@ -676,6 +680,8 @@ def main():
                         normalized = tuple(lossy_tokenize(element, "en"))
                         if normalized in normalized_words:
                             continue
+                        if args.only_word and len(normalized) > 1:
+                            continue
                         normalized_words.add(normalized)
                         # Keep only one element per normalized word, ordered by depth
                         new_elements.append(element)
@@ -733,10 +739,10 @@ def main():
         elif args.algorithm == "explore":
             # Get all elements
             elements = cur.execute(
-                """
+                f"""
                 SELECT text FROM elements
                     WHERE text <> "Nothing"
-                    ORDER BY RANDOM()
+                    ORDER BY {args.key}
                 """
             ).fetchall()
 

@@ -5,7 +5,8 @@ from os import path
 import json
 import os
 import numpy as np
-
+from fuzzywuzzy import process
+from fuzzywuzzy import fuzz
 
 # ANSI escape codes for color
 red = "\033[1;31m"
@@ -72,7 +73,21 @@ def summarize_elements(cur, element):
         ).fetchone()[0]
         == 0
     ):
+        # Find similar elements
+        similar = cur.execute("SELECT text FROM elements").fetchall()
+        similar = [s for s, in similar]
+
+        # Use fuzzy matching to find similar elements
+        similar = process.extract(
+            element, similar, limit=5, scorer=fuzz.token_set_ratio
+        )
+        print(similar)
+        similar = [s for s, _ in similar]
+
         print(f"{red}Element not found in database:{reset} {element}")
+        print(f"{yellow}Did you mean one of these?{reset}")
+        for s in similar:
+            print(f"\t{s}")
         return
 
     # Create a directory for the element
