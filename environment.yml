@@ -9,11 +9,12 @@ dependencies:
   - gensim
   - numpy
   - pip:
-    - requests
-    - matplotlib
-    - numpy
-    - cython
-    - POT
-    - gensim
-    - wordfreq
+      - requests
+      - matplotlib
+      - numpy
+      - cython
+      - POT
+      - gensim
+      - wordfreq
+      - Pillow
   - playwright
