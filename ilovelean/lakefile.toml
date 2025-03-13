@@ -1,0 +1,10 @@
+name = "ilovelean"
+version = "0.1.0"
+defaultTargets = ["ilovelean"]
+
+[[lean_lib]]
+name = "Ilovelean"
+
+[[lean_exe]]
+name = "ilovelean"
+root = "Main"
